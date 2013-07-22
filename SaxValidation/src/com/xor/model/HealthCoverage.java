@@ -6,7 +6,7 @@ public class HealthCoverage {
 	private String benefitEffectiveBeginDate;
 	private String lastPremiumPaidDate;
 	private String classOfContractCode;
-	private String healthCOveragePolicyNo;
+	private String healthCoveragePolicyNo;
 
 	public HealthCoverage(){
 		maintenanceTypeCode=new MaintenanceTypeCode();
@@ -52,12 +52,12 @@ public class HealthCoverage {
 		this.classOfContractCode = classOfContractCode;
 	}
 
-	public String getHealthCOveragePolicyNo() {
-		return healthCOveragePolicyNo;
+	public String getHealthCoveragePolicyNo() {
+		return healthCoveragePolicyNo;
 	}
 
-	public void setHealthCOveragePolicyNo(String healthCOveragePolicyNo) {
-		this.healthCOveragePolicyNo = healthCOveragePolicyNo;
+	public void setHealthCoveragePolicyNo(String healthCOveragePolicyNo) {
+		this.healthCoveragePolicyNo = healthCOveragePolicyNo;
 	}
 
 }

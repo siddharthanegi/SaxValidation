@@ -13,47 +13,49 @@ import com.xor.model.Enrollee;
 import com.xor.model.Enrollment;
 import com.xor.model.Enrollments;
 
-public class Test {
+public final class Test {
 
 	/**
 	 * @param args
 	 */
-	private static final String XML_READER_IMPL= "org.apache.crimson.parser.XMLReaderImpl";
+	
+	private Test(){}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 		try {
 			
-			XMLReader reader= XMLReaderFactory.createXMLReader(XML_READER_IMPL);
+			XMLReader reader= XMLReaderFactory.createXMLReader();
 			reader.setContentHandler(new CustomHandler());
 			reader.parse("main-sample.xml");
 			CustomHandler currentHandler=(CustomHandler) reader.getContentHandler();
-			System.out.println(currentHandler.isValid());
+			System.out.println("\n**********************************\n"+currentHandler.isValid()+"\n**********************************\n");
+			
 			/* Printing unmarshalled object
 			 * 
 			 */
 			Enrollments enrollments=currentHandler.getEnrollments();
 			
-//			System.out.println("<enrollments>");
-//			
-//			int i;
-//			List<Enrollment>enrollment=enrollments.getEnrollment();
-//			for(i=0;i<enrollment.size();i++){
-//				System.out.println("<enrollment>");
-//			
-//				List<Enrollee>enrollee=enrollment.get(i).getEnrollee();
-//				int j=0;
-//				Iterator<Enrollee> it=enrollment.get(i).getEnrollee().iterator();
-//				while(it.hasNext()){
-//				
-//					System.out.println("<enrollee>");
-//				
-//					
-//				}
-//				
-//			}
-			
+			int i;
+			List<Enrollment>enrollment=enrollments.getEnrollment();
+			for(i=0;i<enrollment.size();i++){
+						
+				List<Enrollee>enrollee=enrollment.get(i).getEnrollee();
+				Iterator<Enrollee> it=enrollee.iterator();
+				while(it.hasNext()){
+					Enrollee en=it.next();
+					System.out.println(en.getIssuerIndivIdentifier());
+					System.out.println(en.getHealthCoverage().getInsuranceTypeLkp().getLookupValueCode());
+					System.out.println(en.getMemberReportingCategory().getAdditionalMaintReason().getLookupValueCode());
+									
+				}
+				
+			}
+
+			/*Get the violations !
+			 * 
+			 */
 			
 			List<String>violations=currentHandler.getViolations();
 			Iterator<String> it=violations.iterator();
