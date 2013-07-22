@@ -44,6 +44,7 @@ public class CustomHandler extends DefaultHandler {
 		
 		elementValue = "";
 		nodes.push(qName);
+		System.out.println("<"+qName+">");
 		if (qName.equals("enrollment")) {
 			//System.out.println("Yo");
 			enrollment=new Enrollment();
@@ -65,7 +66,7 @@ public class CustomHandler extends DefaultHandler {
 				setValid(false);
 				violations.add(qName+" is empty or invalid data!");
 			}
-			System.out.println("<"+nodes.pop()+">");
+			
 		}
 		
 		else if(qName.equals("issuerSubscriberIdentifier")){
@@ -75,7 +76,7 @@ public class CustomHandler extends DefaultHandler {
 				setValid(false);
 				violations.add(qName+" is empty or invalid data!");
 			}
-			System.out.println("<"+nodes.pop()+">");
+			
 				
 		}
 		else if(qName.equals("benefitEffectiveBeginDate") || qName.equals("lastPremiumPaidDate")){
@@ -92,7 +93,7 @@ public class CustomHandler extends DefaultHandler {
 			else{
 				healthCoverage.setLastPremiumPaidDate(elementValue);
 			}
-			System.out.println("<"+nodes.pop()+">");
+			
 		
 		}
 		
@@ -103,7 +104,7 @@ public class CustomHandler extends DefaultHandler {
 				setValid(false);
 				violations.add(qName+" is empty or invalid data!");
 			}
-			System.out.println("<"+nodes.pop()+">");
+			
 				
 		}
 		else if(qName.equals("healthCoveragePolicyNo")){
@@ -113,17 +114,18 @@ public class CustomHandler extends DefaultHandler {
 				setValid(false);
 				violations.add(qName+" is empty or invalid data!");
 			}
-			System.out.println("<"+nodes.pop()+">");
+			
 				
 		}
 		else if(qName.equals("lookupValueCode")){
 			
-			System.out.println("<"+nodes.pop()+">");
+			String temp=nodes.pop();
 			String parentElement=nodes.peek();
+			nodes.push(temp);
 			if(parentElement.equals("maintenanceTypeCode")){
 				System.out.println(qName+":"+elementValue);
 				healthCoverage.getMaintanenceTypeCode().setLookupValueCode(elementValue);
-				if(elementValue.matches("[0-9]{3}")){
+				if(!elementValue.matches("[0-9]{3}")){
 					setValid(false);
 					violations.add(parentElement+"->"+qName+" is empty or invalid data!");
 				}
@@ -132,7 +134,7 @@ public class CustomHandler extends DefaultHandler {
 			else if(parentElement.equals("insuranceTypeLkp")){
 				System.out.println(qName+":"+elementValue);
 				healthCoverage.getInsuranceTypeLkp().setLookupValueCode(elementValue);
-				if(elementValue.matches("[A-Z]{3}")){
+				if(!elementValue.matches("[A-Z]{3}")){
 					setValid(false);
 					violations.add(parentElement+"->"+qName+" is empty or invalid data!");
 				}
@@ -141,7 +143,7 @@ public class CustomHandler extends DefaultHandler {
 			else if(parentElement.equals("additionalMaintReason")){
 				System.out.println(qName+":"+elementValue);
 				enrollee.getMemberReportingCategory().getAdditionalMaintReason().setLookupValueCode(elementValue);
-				if(elementValue.matches("[A-Z]+")){
+				if(!elementValue.matches("[A-Z]+")){
 					setValid(false);
 					violations.add(parentElement+"->"+qName+" is empty or invalid data!");
 				}
@@ -151,19 +153,19 @@ public class CustomHandler extends DefaultHandler {
 				
 		else if(qName.equals("healthCoverage")){
 			enrollee.setHealthCoverage(healthCoverage);
-			System.out.println("<"+nodes.pop()+">");
+			
 		}
 		else if(qName.equals("enrollee")){
 			enrollment.getEnrollee().add(enrollee);
-			System.out.println("<"+nodes.pop()+">");
+			
 		}
 		else if(qName.equals("enrollment")){
 			enrollments.getEnrollment().add(enrollment);
-			System.out.println("<"+nodes.pop()+">");
+			
 		}
-		else{
-			System.out.println("<"+nodes.pop()+">");
-		}
+		
+		System.out.println("</"+nodes.pop()+">");	
+	
 	}
 
 	public List<String> getViolations() {

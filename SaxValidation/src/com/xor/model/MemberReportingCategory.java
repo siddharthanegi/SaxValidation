@@ -3,6 +3,10 @@ package com.xor.model;
 public class MemberReportingCategory {
 
 	private AdditionalMaintReason additionalMaintReason;
+	public MemberReportingCategory(){
+		additionalMaintReason=new AdditionalMaintReason();
+		
+	}
 
 	public AdditionalMaintReason getAdditionalMaintReason() {
 		return additionalMaintReason;

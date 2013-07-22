@@ -55,12 +55,12 @@ public class Test {
 //			}
 			
 			
-			
-		
-		
-		
-		
-		
+			List<String>violations=currentHandler.getViolations();
+			Iterator<String> it=violations.iterator();
+			while(it.hasNext()){
+				System.out.println(it.next());
+			}
+					
 		
 		
 		} catch (SAXException e) {
