@@ -1,6 +1,5 @@
 package com.xor.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
