@@ -27,32 +27,32 @@ public class Test {
 			
 			XMLReader reader= XMLReaderFactory.createXMLReader(XML_READER_IMPL);
 			reader.setContentHandler(new CustomHandler());
-			reader.parse("sample.xml");
+			reader.parse("main-sample.xml");
 			CustomHandler currentHandler=(CustomHandler) reader.getContentHandler();
 			System.out.println(currentHandler.isValid());
 			/* Printing unmarshalled object
 			 * 
 			 */
 			Enrollments enrollments=currentHandler.getEnrollments();
-			System.out.println("<enrollments>");
 			
-			int i;
-			List<Enrollment>enrollment=enrollments.getEnrollment();
-			for(i=0;i<enrollment.size();i++){
-				System.out.println("<enrollment>");
-				System.out.println(enrollment.get(i).getSponsorEIN());
-				System.out.println(enrollment.get(i).getInsurerCMSPlanID());
+//			System.out.println("<enrollments>");
+//			
+//			int i;
+//			List<Enrollment>enrollment=enrollments.getEnrollment();
+//			for(i=0;i<enrollment.size();i++){
+//				System.out.println("<enrollment>");
+//			
 //				List<Enrollee>enrollee=enrollment.get(i).getEnrollee();
 //				int j=0;
-				Iterator<Enrollee> it=enrollment.get(i).getEnrollee().iterator();
-				while(it.hasNext()){
-				
-					System.out.println("<enrollee>");
-					System.out.println(it.next().getExchgSubscribertIdentifier());
-					
-				}
-				
-			}
+//				Iterator<Enrollee> it=enrollment.get(i).getEnrollee().iterator();
+//				while(it.hasNext()){
+//				
+//					System.out.println("<enrollee>");
+//				
+//					
+//				}
+//				
+//			}
 			
 			
 			
