@@ -9,6 +9,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import com.xor.handler.CustomHandler;
+import com.xor.handler.DraftHandler;
 import com.xor.model.Enrollee;
 import com.xor.model.Enrollment;
 import com.xor.model.Enrollments;
@@ -26,32 +27,32 @@ public final class Test {
 
 		try {
 			
-			XMLReader reader= XMLReaderFactory.createXMLReader();
-			reader.setContentHandler(new CustomHandler());
+			XMLReader reader= XMLReaderFactory.createXMLReader("com.sun.org.apache.xerces.internal.parsers.SAXParser");
+			reader.setContentHandler(new DraftHandler());
 			reader.parse("main-sample.xml");
-			CustomHandler currentHandler=(CustomHandler) reader.getContentHandler();
+			DraftHandler currentHandler=(DraftHandler) reader.getContentHandler();
 			System.out.println("\n**********************************\n"+currentHandler.isValid()+"\n**********************************\n");
 			
 			/* Printing unmarshalled object
 			 * 
 			 */
-			Enrollments enrollments=currentHandler.getEnrollments();
-			
-			int i;
-			List<Enrollment>enrollment=enrollments.getEnrollment();
-			for(i=0;i<enrollment.size();i++){
-						
-				List<Enrollee>enrollee=enrollment.get(i).getEnrollee();
-				Iterator<Enrollee> it=enrollee.iterator();
-				while(it.hasNext()){
-					Enrollee en=it.next();
-					System.out.println(en.getIssuerIndivIdentifier());
-					System.out.println(en.getHealthCoverage().getInsuranceTypeLkp().getLookupValueCode());
-					System.out.println(en.getMemberReportingCategory().getAdditionalMaintReason().getLookupValueCode());
-									
-				}
-				
-			}
+//			Enrollments enrollments=currentHandler.getEnrollments();
+//			
+//			int i;
+//			List<Enrollment>enrollment=enrollments.getEnrollment();
+//			for(i=0;i<enrollment.size();i++){
+//						
+//				List<Enrollee>enrollee=enrollment.get(i).getEnrollee();
+//				Iterator<Enrollee> it=enrollee.iterator();
+//				while(it.hasNext()){
+//					Enrollee en=it.next();
+//					System.out.println(en.getIssuerSubscriberIdentifier());
+//					System.out.println(en.getHealthCoverage().getInsuranceTypeLkp().getLookupValueCode());
+//					System.out.println(en.getMemberReportingCategory().getAdditionalMaintReason().getLookupValueCode());
+//									
+//				}
+//				
+//			}
 
 			/*Get the violations !
 			 * 
