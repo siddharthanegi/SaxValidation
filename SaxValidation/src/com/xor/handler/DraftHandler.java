@@ -17,25 +17,25 @@ import com.xor.model.MandatoryFields;
  */
 public class DraftHandler extends DefaultHandler {
 	/**
-	 * elementValue : stores the text between an element tag
-	 * violations : stores a list of all violations encountered during parsing
-	 * valid :  boolean to check the validity of the xml doc
-	 * nodes : stack to store the elements encountered while parsing
-	 * mandatoryFields : object which stores the values of the required elements from the xml doc
-	 * currentEnrollmentStatus : status of the current enrollment block being parsed
+	 * elementValue : stores the text between an element tag. violations :
+	 * stores a list of all violations encountered during parsing. valid :
+	 * boolean to check the validity of the XML doc. nodes : stack to store the
+	 * elements encountered while parsing. mandatoryFields : object which stores
+	 * the values of the required elements from the XML doc.
+	 * currentEnrollmentStatus : status of the current enrollment block being
+	 * parsed.
 	 */
-
 	private String elementValue;
 	private List<String> violations;
 	private boolean valid;
 	private Stack<String> nodes;
 	private MandatoryFields mandatoryFields;
 	private String currentEnrollmentStatus;
+	private int enrollmentId;
 
 	/**
-	 * Patterns to be used to check for validity
+	 * Patterns to be used to check for validity.
 	 */
-			
 	private static final String ISSUER_IDENTIFIER_PATTERN = "[0-9]{10}";
 	private static final String DATE_PATTERN = "^(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$";
 	private static final String HEALTH_COVERAGE_POLICY_NUMBER_PATTERN = "[0-9]{6}";
@@ -95,7 +95,8 @@ public class DraftHandler extends DefaultHandler {
 		elementValue = "";
 		nodes.push(qName);
 		if (qName.equals("enrollment")) {
-			currentEnrollmentStatus = "BEGIN";
+			currentEnrollmentStatus = "BEGIN"; // Flag variable to get data of
+												// the subscriber.
 		}
 
 	}
@@ -114,14 +115,14 @@ public class DraftHandler extends DefaultHandler {
 	 *            The qualified name (with prefix), or the empty string if
 	 *            qualified names are not available.
 	 */
-
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 
 		if (currentEnrollmentStatus.equals("BEGIN")
 				|| currentEnrollmentStatus.equals("CONFIRM")) {
 
-			getMandatoryElements(qName);
+			getMandatoryElements(qName); // Get element values for validations
+											// at the end of enrollee tag.
 
 		}
 		if (qName.equals("lookupValueCode")) {
@@ -133,7 +134,9 @@ public class DraftHandler extends DefaultHandler {
 			if (parentElement.equals("additionalMaintReason")) {
 				System.out.println(qName + ":" + elementValue);
 				currentEnrollmentStatus = elementValue;
-				statusCheckandValidation();
+				statusCheckandValidation(); // Check for status of enrollment
+											// and perform validations at the
+											// subscriber level.
 
 			}
 
@@ -141,13 +144,22 @@ public class DraftHandler extends DefaultHandler {
 		if (qName.equals("enrollee")
 				&& currentEnrollmentStatus.equals("CONFIRM")
 				&& mandatoryFields.getSubscriberFlag().equals("N")) {
-			statusConfirmValidations();
+			statusConfirmValidations(); // Validations at member level (only for
+										// status="CONFIRM").
+		}
+		if (qName.equals("id")) {
+			enrollmentId = Integer.parseInt(elementValue); // Get the current
+															// enrollment ID.
 		}
 
 	}
 
+	/**
+	 * Checks the current status of the enrollment and performs subscriber level
+	 * validations.
+	 */
 	private void statusCheckandValidation() {
-		// TODO Auto-generated method stub
+
 		if (elementValue.equals("CONFIRM")) {
 
 			statusConfirmValidations();
@@ -162,8 +174,16 @@ public class DraftHandler extends DefaultHandler {
 
 	}
 
+	/**
+	 * Store the mandatory field data sequentially into the mandatoryField
+	 * object for validations at the member level.Only for enrollments with
+	 * status : "CONFIRM".
+	 * 
+	 * @param qName
+	 *            current element name.
+	 */
 	private void getMandatoryElements(String qName) {
-		// TODO Auto-generated method stub
+
 		if (qName.equals("subscriberFlag")) {
 			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setSubscriberFlag(elementValue);
@@ -194,59 +214,110 @@ public class DraftHandler extends DefaultHandler {
 
 	}
 
+	/**
+	 * Subscriber level validations for enrollments with status : "CANCEL".
+	 */
 	private void statusCancelValidations() {
-		// TODO Auto-generated method stub
-		System.out.println("Cancel Validations");
+
+		System.out.println("\n*Cancel Validations*");
 		checkCommonIdViolations();
 		checkViolation(DATE_PATTERN,
-				mandatoryFields.getBenefitEffectiveEndDate());
+				mandatoryFields.getBenefitEffectiveEndDate(),
+				"benefitEffectiveEndDate");
 	}
 
+	/**
+	 * Subscriber level validations for enrollments with status : "TERM".
+	 */
 	private void statusTerminateValidations() {
-		// TODO Auto-generated method stub
-		System.out.println("Terminate Validations");
+
+		System.out.println("\n*Terminate Validations*");
 		checkViolation(DATE_PATTERN,
-				mandatoryFields.getBenefitEffectiveEndDate());
-		checkViolation(DATE_PATTERN, mandatoryFields.getLastPremiumPaidDate());
+				mandatoryFields.getBenefitEffectiveEndDate(),
+				"benefitEffectiveEndDate");
+		checkViolation(DATE_PATTERN, mandatoryFields.getLastPremiumPaidDate(),
+				"lastPremiumPaidDate");
 	}
 
+	/**
+	 * Subscriber level validations for enrollments with status : "CONFIRM".
+	 */
 	private void statusConfirmValidations() {
-		// TODO Auto-generated method stub
-		System.out.println("Confirm Validations");
+
+		System.out.println("\n*Confirm Validations*");
 		checkCommonIdViolations();
 		checkViolation(DATE_PATTERN,
-				mandatoryFields.getBenefitEffectiveBeginDate());
-		checkViolation(DATE_PATTERN, mandatoryFields.getLastPremiumPaidDate());
+				mandatoryFields.getBenefitEffectiveBeginDate(),
+				"benefitEffectiveBeginDate");
+		checkViolation(DATE_PATTERN, mandatoryFields.getLastPremiumPaidDate(),
+				"lastPremiumPaidDate");
 		checkViolation(HEALTH_COVERAGE_POLICY_NUMBER_PATTERN,
-				mandatoryFields.getHealthCoveragePolicyNo());
+				mandatoryFields.getHealthCoveragePolicyNo(),
+				"healthCoveragePolicyNo");
 
 	}
 
+	/**
+	 * Validation for elements common between various statuses.
+	 */
 	private void checkCommonIdViolations() {
-		// TODO Auto-generated method stub
+
 		checkViolation(ISSUER_IDENTIFIER_PATTERN,
-				mandatoryFields.getIssuerIndivIdentifier());
+				mandatoryFields.getIssuerIndivIdentifier(),
+				"issuerIndivIdentifier");
 		checkViolation(ISSUER_IDENTIFIER_PATTERN,
-				mandatoryFields.getIssuerSubscriberIdentifier());
+				mandatoryFields.getIssuerSubscriberIdentifier(),
+				"issuerSubscriberIdentifier");
 	}
 
+	/**
+	 * Getter for violations present in the XML doc.
+	 * 
+	 * @return violations.
+	 */
 	public List<String> getViolations() {
 		return violations;
 	}
 
+	/**
+	 * Getter for the boolean valid which holds the validity of the XMl doc.
+	 * 
+	 * @return valid.
+	 */
 	public boolean isValid() {
 		return valid;
 	}
 
+	/**
+	 * Setter for boolean valid.
+	 * 
+	 * @param valid
+	 *            .
+	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
 
-	private void checkViolation(String pattern, String elementValue) {
+	/**
+	 * Checks for violations in the passed elementValue according to the regular
+	 * expression provided. If a violation is found, the boolean valid is set to
+	 * false and the violation is added to the violations list.
+	 * 
+	 * @param pattern
+	 *            Regular Expression.
+	 * @param elementValue
+	 *            Element value to be checked.
+	 * @param elementName
+	 *            Element name.
+	 */
+	private void checkViolation(String pattern, String elementValue,
+			String elementName) {
 
 		if (!elementValue.matches(pattern)) {
 			setValid(false);
-			violations.add("Empty or invalid data!" + " Data:" + elementValue);
+			violations.add("Enrollment ID:" + enrollmentId + " Field:"
+					+ elementName + "\nViolation:Empty or invalid data!"
+					+ " Data:" + elementValue + " Expected:" + pattern + "\n");
 		}
 
 	}

@@ -1,5 +1,9 @@
 package com.xor.model;
 
+/**
+ * @author negi_s
+ *
+ */
 public class MandatoryFields {
 	
 	private String subscriberFlag;
