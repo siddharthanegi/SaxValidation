@@ -1,4 +1,4 @@
-package com.xor.model;
+package com.xor.extras;
 
 public class AdditionalMaintReason {
 

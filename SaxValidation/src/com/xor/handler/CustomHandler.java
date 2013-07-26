@@ -9,10 +9,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.xor.model.Enrollee;
-import com.xor.model.Enrollment;
-import com.xor.model.Enrollments;
-import com.xor.model.HealthCoverage;
+import com.xor.extras.Enrollee;
+import com.xor.extras.Enrollment;
+import com.xor.extras.Enrollments;
+import com.xor.extras.HealthCoverage;
 
 
 

@@ -9,142 +9,225 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.xor.model.Enrollee;
-import com.xor.model.Enrollment;
-import com.xor.model.Enrollments;
-import com.xor.model.HealthCoverage;
 import com.xor.model.MandatoryFields;
 
+/**
+ * @author negi_s
+ * 
+ */
 public class DraftHandler extends DefaultHandler {
-	
-		
+	/**
+	 * elementValue : stores the text between an element tag
+	 * violations : stores a list of all violations encountered during parsing
+	 * valid :  boolean to check the validity of the xml doc
+	 * nodes : stack to store the elements encountered while parsing
+	 * mandatoryFields : object which stores the values of the required elements from the xml doc
+	 * currentEnrollmentStatus : status of the current enrollment block being parsed
+	 */
+
 	private String elementValue;
 	private List<String> violations;
 	private boolean valid;
-	private Enrollments enrollments;
-	private Enrollment enrollment;
-	private Enrollee enrollee;
-	private HealthCoverage healthCoverage;
 	private Stack<String> nodes;
 	private MandatoryFields mandatoryFields;
 	private String currentEnrollmentStatus;
-	
-	
-	private static final String ISSUER_IDENTIFIER_PATTERN="[0-9]{10}";
-	private static final String DATE_PATTERN="^(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$";
-	private static final String CONTRACT_CODE_PATTERN="[0-9A-Z]{16}";
-	private static final String HEALTH_COVERAGE_POLICY_NUMBER_PATTERN="[0-9]{6}";
-	private static final String MAINTENANCE_TYPE_CODE_PATTERN="[0-9]{3}";
-	private static final String INSURANCE_TYPE_LKP_PATTERN="[A-Z]{3}";
-	private static final String ADDITIONAL_MAINT_REASON_PATTERN="[A-Z]+";
-	
-	
+
+	/**
+	 * Patterns to be used to check for validity
+	 */
+			
+	private static final String ISSUER_IDENTIFIER_PATTERN = "[0-9]{10}";
+	private static final String DATE_PATTERN = "^(19|20)[0-9]{2}(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])$";
+	private static final String HEALTH_COVERAGE_POLICY_NUMBER_PATTERN = "[0-9]{6}";
+
+	/**
+	 * Default Constructor
+	 */
 	public DraftHandler() {
 		elementValue = "";
-		violations=new ArrayList<String>();
-		valid=true;
-		enrollments=new Enrollments();
-		nodes=new Stack<String>();
-		mandatoryFields=new MandatoryFields();
-		currentEnrollmentStatus="";
+		violations = new ArrayList<String>();
+		valid = true;
+		nodes = new Stack<String>();
+		mandatoryFields = new MandatoryFields();
+		currentEnrollmentStatus = "";
 	}
 
+	/**
+	 * Receive notification of character data inside an element. By default, do
+	 * nothing. Application writers may override this method to take specific
+	 * actions for each chunk of character data (such as adding the data to a
+	 * node or buffer, or printing it to a file).
+	 * 
+	 * @param ch
+	 *            The characters.
+	 * @param start
+	 *            The start position in the character array.
+	 * @param length
+	 *            The number of characters to use from the character array.
+	 */
 	public void characters(char ch[], int start, int length)
 			throws SAXException {
 
-		char[] cloneElementValue=Arrays.copyOf(ch, ch.length);
+		char[] cloneElementValue = Arrays.copyOf(ch, ch.length);
 		elementValue = new String(cloneElementValue, start, length);
 	}
 
-	public void startElement(String uri, String localName, String qName,Attributes attributes) throws SAXException {
-		
-		
+	/**
+	 * Receive notification of the start of an element.
+	 * 
+	 * @param uri
+	 *            The Namespace URI, or the empty string if the element has no
+	 *            Namespace URI or if Namespace processing is not being
+	 *            performed.
+	 * @param localName
+	 *            The local name (without prefix), or the empty string if
+	 *            Namespace processing is not being performed.
+	 * @param qName
+	 *            The qualified name (with prefix), or the empty string if
+	 *            qualified names are not available.
+	 * @param attributes
+	 *            The attributes attached to the element. If there are no
+	 *            attributes, it shall be an empty Attributes object.
+	 */
+	public void startElement(String uri, String localName, String qName,
+			Attributes attributes) throws SAXException {
+
 		elementValue = "";
 		nodes.push(qName);
-		if(qName.equals("enrollment")){
-			currentEnrollmentStatus="";
+		if (qName.equals("enrollment")) {
+			currentEnrollmentStatus = "BEGIN";
 		}
-			
+
 	}
 
-	public void endElement(String uri, String localName, String qName) throws SAXException {
-		
-		if(qName.equals("subscriberFlag")){
-			System.out.println(qName+":"+elementValue);
-			mandatoryFields.setSubscriberFlag(elementValue);
+	/**
+	 * Receive notification of the end of an element.
+	 * 
+	 * @param uri
+	 *            The Namespace URI, or the empty string if the element has no
+	 *            Namespace URI or if Namespace processing is not being
+	 *            performed.
+	 * @param localName
+	 *            The local name (without prefix), or the empty string if
+	 *            Namespace processing is not being performed.
+	 * @param qName
+	 *            The qualified name (with prefix), or the empty string if
+	 *            qualified names are not available.
+	 */
+
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+
+		if (currentEnrollmentStatus.equals("BEGIN")
+				|| currentEnrollmentStatus.equals("CONFIRM")) {
+
+			getMandatoryElements(qName);
+
 		}
-		else if(qName.equals("issuerIndivIdentifier")){
-			System.out.println(qName+":"+elementValue);
+		if (qName.equals("lookupValueCode")) {
+
+			String temp = nodes.pop();
+			String parentElement = nodes.peek();
+
+			nodes.push(temp);
+			if (parentElement.equals("additionalMaintReason")) {
+				System.out.println(qName + ":" + elementValue);
+				currentEnrollmentStatus = elementValue;
+				statusCheckandValidation();
+
+			}
+
+		}
+		if (qName.equals("enrollee")
+				&& currentEnrollmentStatus.equals("CONFIRM")
+				&& mandatoryFields.getSubscriberFlag().equals("N")) {
+			statusConfirmValidations();
+		}
+
+	}
+
+	private void statusCheckandValidation() {
+		// TODO Auto-generated method stub
+		if (elementValue.equals("CONFIRM")) {
+
+			statusConfirmValidations();
+		} else if (elementValue.equals("CANCEL")) {
+			statusCancelValidations();
+		} else if (elementValue.equals("TERM")) {
+			statusTerminateValidations();
+		} else {
+			setValid(false);
+			violations.add("Bad Status Code!");
+		}
+
+	}
+
+	private void getMandatoryElements(String qName) {
+		// TODO Auto-generated method stub
+		if (qName.equals("subscriberFlag")) {
+			System.out.println(qName + ":" + elementValue);
+			mandatoryFields.setSubscriberFlag(elementValue);
+		} else if (qName.equals("issuerIndivIdentifier")) {
+			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setIssuerIndivIdentifier(elementValue);
 		}
-		
-		else if(qName.equals("issuerSubscriberIdentifier")){
-			System.out.println(qName+":"+elementValue);
+
+		else if (qName.equals("issuerSubscriberIdentifier")) {
+			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setIssuerSubscriberIdentifier(elementValue);
-		    
-				
-		}
-		else if(qName.equals("benefitEffectiveBeginDate")){
-			System.out.println(qName+":"+elementValue);
+
+		} else if (qName.equals("benefitEffectiveBeginDate")) {
+			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setBenefitEffectiveBeginDate(elementValue);
-					
-		}
-		else if(qName.equals("lastPremiumPaidDate")){
-			System.out.println(qName+":"+elementValue);
+
+		} else if (qName.equals("lastPremiumPaidDate")) {
+			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setLastPremiumPaidDate(elementValue);
-		}
-		else if(qName.equals("benefitEffectiveEndDate")){
-			System.out.println(qName+":"+elementValue);
+		} else if (qName.equals("benefitEffectiveEndDate")) {
+			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setBenefitEffectiveEndDate(elementValue);
-		}
-		else if(qName.equals("healthCoveragePolicyNo")){
-			System.out.println(qName+":"+elementValue);
+		} else if (qName.equals("healthCoveragePolicyNo")) {
+			System.out.println(qName + ":" + elementValue);
 			mandatoryFields.setHealthCoveragePolicyNo(elementValue);
-			
+
 		}
-		 if(qName.equals("lookupValueCode")){
-				
-				String temp=nodes.pop();
-				String parentElement=nodes.peek();
-				
-				nodes.push(temp);
-			    if(parentElement.equals("additionalMaintReason")){
-					System.out.println(qName+":"+elementValue);
-					if(elementValue.equals("CONFIRM")){
-						currentEnrollmentStatus=elementValue;
-						statusConfirmValidations();
-					}
-					else if(elementValue.equals("CANCEL")){
-						statusCancelValidations();
-					}
-					else if(elementValue.equals("TERM")){
-						statusTerminateValidations();
-					}
-					else{
-						violations.add("Bad Status Code!");
-					}
-				
-						
-				}
-				
-			}
-		
-	
+
 	}
 
 	private void statusCancelValidations() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Cancel Validations");
+		checkCommonIdViolations();
+		checkViolation(DATE_PATTERN,
+				mandatoryFields.getBenefitEffectiveEndDate());
 	}
 
 	private void statusTerminateValidations() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Terminate Validations");
+		checkViolation(DATE_PATTERN,
+				mandatoryFields.getBenefitEffectiveEndDate());
+		checkViolation(DATE_PATTERN, mandatoryFields.getLastPremiumPaidDate());
 	}
 
 	private void statusConfirmValidations() {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Confirm Validations");
+		checkCommonIdViolations();
+		checkViolation(DATE_PATTERN,
+				mandatoryFields.getBenefitEffectiveBeginDate());
+		checkViolation(DATE_PATTERN, mandatoryFields.getLastPremiumPaidDate());
+		checkViolation(HEALTH_COVERAGE_POLICY_NUMBER_PATTERN,
+				mandatoryFields.getHealthCoveragePolicyNo());
+
+	}
+
+	private void checkCommonIdViolations() {
+		// TODO Auto-generated method stub
+		checkViolation(ISSUER_IDENTIFIER_PATTERN,
+				mandatoryFields.getIssuerIndivIdentifier());
+		checkViolation(ISSUER_IDENTIFIER_PATTERN,
+				mandatoryFields.getIssuerSubscriberIdentifier());
 	}
 
 	public List<String> getViolations() {
@@ -158,61 +241,14 @@ public class DraftHandler extends DefaultHandler {
 	public void setValid(boolean valid) {
 		this.valid = valid;
 	}
-	public Enrollments getEnrollments() {
-		return enrollments;
-	}
-	private void checkViolation(String pattern,String qName){
-		
-		if(!elementValue.matches(pattern)){
+
+	private void checkViolation(String pattern, String elementValue) {
+
+		if (!elementValue.matches(pattern)) {
 			setValid(false);
-			violations.add(qName+" is empty or invalid data!"+" Data:"+elementValue);
-			}
-		
-	}
-	private void aggregateData(String qName){
-		
-		if(qName.equals("healthCoverage")){
-			enrollee.setHealthCoverage(healthCoverage);
-			
+			violations.add("Empty or invalid data!" + " Data:" + elementValue);
 		}
-		else if(qName.equals("enrollee")){
-			enrollment.getEnrollee().add(enrollee);
-			
-		}
-		else if(qName.equals("enrollment")){
-			enrollments.getEnrollment().add(enrollment);
-			
-		}
-	}
-	private void lookUpCodeCheck(String qName){
-		
-     if(qName.equals("lookupValueCode")){
-			
-			String temp=nodes.pop();
-			String parentElement=nodes.peek();
-			
-			nodes.push(temp);
-			if(parentElement.equals("maintenanceTypeCode")){
-				System.out.println(qName+":"+elementValue);
-				healthCoverage.getMaintanenceTypeCode().setLookupValueCode(elementValue);
-				checkViolation(MAINTENANCE_TYPE_CODE_PATTERN, parentElement+"->"+qName);
-				
-			}
-			else if(parentElement.equals("insuranceTypeLkp")){
-				System.out.println(qName+":"+elementValue);
-				healthCoverage.getInsuranceTypeLkp().setLookupValueCode(elementValue);
-				checkViolation(INSURANCE_TYPE_LKP_PATTERN, parentElement+"->"+qName);
-					
-			}
-			else if(parentElement.equals("additionalMaintReason")){
-				System.out.println(qName+":"+elementValue);
-				enrollee.getMemberReportingCategory().getAdditionalMaintReason().setLookupValueCode(elementValue);
-				checkViolation(ADDITIONAL_MAINT_REASON_PATTERN, parentElement+"->"+qName);
-			
-					
-			}
-			
-		}
+
 	}
 
 }

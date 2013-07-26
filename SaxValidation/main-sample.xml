@@ -81,6 +81,7 @@
 					<lookupValueCode>HLT</lookupValueCode>
 				</insuranceTypeLkp>
 				<benefitEffectiveBeginDate>20140101</benefitEffectiveBeginDate>
+				<benefitEffectiveEndDate>20130523a</benefitEffectiveEndDate>
 				<lastPremiumPaidDate>20140201</lastPremiumPaidDate>
 				<classOfContractCode>40513CA034100501</classOfContractCode>
 				<healthCoveragePolicyNo>333333</healthCoveragePolicyNo>
@@ -99,7 +100,7 @@
 				<totalPremiumAmt>362.81</totalPremiumAmt>
 				<totalPremiumDate>20140101</totalPremiumDate>
 				<additionalMaintReason>
-					<lookupValueCode>CONFIRM</lookupValueCode>
+					<lookupValueCode>CANCEL</lookupValueCode>
 				</additionalMaintReason>
 				<additionalMaintReasonDate>20140101</additionalMaintReasonDate>
 			</memberReportingCategory>
@@ -176,6 +177,110 @@
 					<lookupValueCode>HLT</lookupValueCode>
 				</insuranceTypeLkp>
 				<benefitEffectiveBeginDate>20140101</benefitEffectiveBeginDate>
+				<benefitEffectiveEndDate>20130523</benefitEffectiveEndDate>
+				<lastPremiumPaidDate>20140201</lastPremiumPaidDate>
+				<classOfContractCode>40513CA034100501</classOfContractCode>
+				<healthCoveragePolicyNo>333333</healthCoveragePolicyNo>
+			</healthCoverage>
+			<memberReportingCategory>
+				<aptcAmt>20.00</aptcAmt>
+				<aptcDate>20140101</aptcDate>
+				<csrAmt>0.00</csrAmt>
+				<csrDate>20140101</csrDate>
+				<healthCoveragePremiumAmt>362.81</healthCoveragePremiumAmt>
+				<healthCoveragePremiumDate>20140101</healthCoveragePremiumDate>
+				<ratingArea>15</ratingArea>
+				<ratingAreaDate>20140101</ratingAreaDate>
+				<totalIndivResponsibilityAmt>342.81</totalIndivResponsibilityAmt>
+				<totalIndivResponsibilityDate>20140101</totalIndivResponsibilityDate>
+				<totalPremiumAmt>362.81</totalPremiumAmt>
+				<totalPremiumDate>20140101</totalPremiumDate>
+				<additionalMaintReasonDate>20140101</additionalMaintReasonDate>
+			</memberReportingCategory>
+		</enrollee>
+	</enrollment>
+	<enrollment>
+		<actionCode>2</actionCode>
+		<sponsorName>Aditya S Dubey Mr</sponsorName>
+		<sponsorEIN>632145782</sponsorEIN>
+		<insurerName>Kaiser Permanante</insurerName>
+		<insurerTaxIdNumber>941340523</insurerTaxIdNumber>
+		<QTYy>1</QTYy>
+		<QTYn>0</QTYn>
+		<QTYt>1</QTYt>
+		<enrollee>
+			<subscriberFlag>Y</subscriberFlag>
+			<relationshipLkp>
+				<lookupValueCode>18</lookupValueCode>
+			</relationshipLkp>
+			<enrollmentEvents>
+				<eventTypeLkp>
+					<lookupValueCode>021</lookupValueCode>
+				</eventTypeLkp>
+				<eventReasonLkp>
+					<lookupValueCode>28</lookupValueCode>
+				</eventReasonLkp>
+			</enrollmentEvents>
+			<exchgSubscriberIdentifier>999</exchgSubscriberIdentifier>
+			<exchgIndivIdentifier>777</exchgIndivIdentifier>
+			<issuerIndivIdentifier>3333333555</issuerIndivIdentifier>
+			<issuerSubscriberIdentifier>2222222298</issuerSubscriberIdentifier>
+			<memberSignatureDate>20130719</memberSignatureDate>
+			<memberEntityIdentifierCode>
+				<lookupValueCode>IL</lookupValueCode>
+			</memberEntityIdentifierCode>
+			<memberLastName>Dubey</memberLastName>
+			<memberFirstName>Mojo</memberFirstName>
+			<memberMiddleName>S</memberMiddleName>
+			<memberNameSuffix>Mr</memberNameSuffix>
+			<memberSSN>632145782</memberSSN>
+			<memberPrimaryPhoneNo>6508523547</memberPrimaryPhoneNo>
+			<memberHomeAddress>
+				<address1>222 ww test</address1>
+				<address2>444 fff test111</address2>
+				<city>CA</city>
+				<state>CA</state>
+				<zip>91714</zip>
+				<county>CY</county>
+			</memberHomeAddress>
+			<memberBirthDate>19800101</memberBirthDate>
+			<memberGenderLkp>
+				<lookupValueCode>M</lookupValueCode>
+			</memberGenderLkp>
+			<memberMaritalStatusLkp>
+				<lookupValueCode>I</lookupValueCode>
+			</memberMaritalStatusLkp>
+			<memberRaceEthnicityLkp>
+				<lookupValueCode>2029-7</lookupValueCode>
+			</memberRaceEthnicityLkp>
+			<memberCitizenshipStatusLkp>
+				<lookupValueCode>1</lookupValueCode>
+			</memberCitizenshipStatusLkp>
+			<memberTobaccoUsageLkp>
+				<lookupValueCode>N</lookupValueCode>
+			</memberTobaccoUsageLkp>
+			<languageWrittenLkp>
+				<lookupValueCode>eng</lookupValueCode>
+			</languageWrittenLkp>
+			<languageSpokenLkp>
+				<lookupValueCode>eng</lookupValueCode>
+			</languageSpokenLkp>
+			<memberMailingAddress>
+				<address1>eee test111</address1>
+				<address2>yyy test111</address2>
+				<city>CA</city>
+				<state>CA</state>
+				<zip>91714</zip>
+			</memberMailingAddress>
+			<healthCoverage>
+				<maintenanceTypeCode>
+					<lookupValueCode>021</lookupValueCode>
+				</maintenanceTypeCode>
+				<insuranceTypeLkp>
+					<lookupValueCode>HLT</lookupValueCode>
+				</insuranceTypeLkp>
+				<benefitEffectiveBeginDate>20140101</benefitEffectiveBeginDate>
+				<benefitEffectiveEndDate>20130523</benefitEffectiveEndDate>
 				<lastPremiumPaidDate>20140201</lastPremiumPaidDate>
 				<classOfContractCode>40513CA034100501</classOfContractCode>
 				<healthCoveragePolicyNo>333333</healthCoveragePolicyNo>
@@ -194,8 +299,101 @@
 				<totalPremiumAmt>362.81</totalPremiumAmt>
 				<totalPremiumDate>20140101</totalPremiumDate>
 				<additionalMaintReason>
-					<lookupValueCode>CANCEL</lookupValueCode>
+					<lookupValueCode>CONFIRM</lookupValueCode>
 				</additionalMaintReason>
+				<additionalMaintReasonDate>20140101</additionalMaintReasonDate>
+			</memberReportingCategory>
+		</enrollee>
+		<enrollee>
+			<subscriberFlag>N</subscriberFlag>
+			<relationshipLkp>
+				<lookupValueCode>01</lookupValueCode>
+			</relationshipLkp>
+			<enrollmentEvents>
+				<eventTypeLkp>
+					<lookupValueCode>021</lookupValueCode>
+				</eventTypeLkp>
+				<eventReasonLkp>
+					<lookupValueCode>28</lookupValueCode>
+				</eventReasonLkp>
+			</enrollmentEvents>
+			<exchgSubscriberIdentifier>999</exchgSubscriberIdentifier>
+			<exchgIndivIdentifier>777</exchgIndivIdentifier>
+			<issuerIndivIdentifier>3333333555</issuerIndivIdentifier>
+			<issuerSubscriberIdentifier>2222222249</issuerSubscriberIdentifier>
+			<memberSignatureDate>20130719</memberSignatureDate>
+			<memberEntityIdentifierCode>
+				<lookupValueCode>IL</lookupValueCode>
+			</memberEntityIdentifierCode>
+			<memberLastName>Dubey</memberLastName>
+			<memberFirstName>Mina</memberFirstName>
+			<memberMiddleName>S</memberMiddleName>
+			<memberNameSuffix>Mrs</memberNameSuffix>
+			<memberSSN>632145782</memberSSN>
+			<memberPrimaryPhoneNo>6508523547</memberPrimaryPhoneNo>
+			<memberHomeAddress>
+				<address1>222 ww test</address1>
+				<address2>444 fff test111</address2>
+				<city>CA</city>
+				<state>CA</state>
+				<zip>91714</zip>
+				<county>CY</county>
+			</memberHomeAddress>
+			<memberBirthDate>19800101</memberBirthDate>
+			<memberGenderLkp>
+				<lookupValueCode>F</lookupValueCode>
+			</memberGenderLkp>
+			<memberMaritalStatusLkp>
+				<lookupValueCode>I</lookupValueCode>
+			</memberMaritalStatusLkp>
+			<memberRaceEthnicityLkp>
+				<lookupValueCode>2029-7</lookupValueCode>
+			</memberRaceEthnicityLkp>
+			<memberCitizenshipStatusLkp>
+				<lookupValueCode>1</lookupValueCode>
+			</memberCitizenshipStatusLkp>
+			<memberTobaccoUsageLkp>
+				<lookupValueCode>N</lookupValueCode>
+			</memberTobaccoUsageLkp>
+			<languageWrittenLkp>
+				<lookupValueCode>eng</lookupValueCode>
+			</languageWrittenLkp>
+			<languageSpokenLkp>
+				<lookupValueCode>eng</lookupValueCode>
+			</languageSpokenLkp>
+			<memberMailingAddress>
+				<address1>eee test111</address1>
+				<address2>yyy test111</address2>
+				<city>CA</city>
+				<state>CA</state>
+				<zip>91714</zip>
+			</memberMailingAddress>
+			<healthCoverage>
+				<maintenanceTypeCode>
+					<lookupValueCode>021</lookupValueCode>
+				</maintenanceTypeCode>
+				<insuranceTypeLkp>
+					<lookupValueCode>HLT</lookupValueCode>
+				</insuranceTypeLkp>
+				<benefitEffectiveBeginDate>20140101</benefitEffectiveBeginDate>
+				<benefitEffectiveEndDate>20130523</benefitEffectiveEndDate>
+				<lastPremiumPaidDate>20140201</lastPremiumPaidDate>
+				<classOfContractCode>40513CA034100501</classOfContractCode>
+				<healthCoveragePolicyNo>333333</healthCoveragePolicyNo>
+			</healthCoverage>
+			<memberReportingCategory>
+				<aptcAmt>20.00</aptcAmt>
+				<aptcDate>20140101</aptcDate>
+				<csrAmt>0.00</csrAmt>
+				<csrDate>20140101</csrDate>
+				<healthCoveragePremiumAmt>362.81</healthCoveragePremiumAmt>
+				<healthCoveragePremiumDate>20140101</healthCoveragePremiumDate>
+				<ratingArea>15</ratingArea>
+				<ratingAreaDate>20140101</ratingAreaDate>
+				<totalIndivResponsibilityAmt>342.81</totalIndivResponsibilityAmt>
+				<totalIndivResponsibilityDate>20140101</totalIndivResponsibilityDate>
+				<totalPremiumAmt>362.81</totalPremiumAmt>
+				<totalPremiumDate>20140101</totalPremiumDate>
 				<additionalMaintReasonDate>20140101</additionalMaintReasonDate>
 			</memberReportingCategory>
 		</enrollee>
