@@ -95,8 +95,9 @@ public class DraftHandler extends DefaultHandler {
 		elementValue = "";
 		nodes.push(qName);
 		if (qName.equals("enrollment")) {
-			currentEnrollmentStatus = "BEGIN"; // Flag variable to get data of
-												// the subscriber.
+
+			// Flag variable to get data of the subscriber.
+			currentEnrollmentStatus = "BEGIN";
 		}
 
 	}
@@ -121,9 +122,8 @@ public class DraftHandler extends DefaultHandler {
 		if (currentEnrollmentStatus.equals("BEGIN")
 				|| currentEnrollmentStatus.equals("CONFIRM")) {
 
-			getMandatoryElements(qName); // Get element values for validations
-											// at the end of enrollee tag.
-
+			// Get element values for validations at the end of enrollee tag.
+			getMandatoryElements(qName);
 		}
 		if (qName.equals("lookupValueCode")) {
 
@@ -134,22 +134,24 @@ public class DraftHandler extends DefaultHandler {
 			if (parentElement.equals("additionalMaintReason")) {
 				System.out.println(qName + ":" + elementValue);
 				currentEnrollmentStatus = elementValue;
-				statusCheckandValidation(); // Check for status of enrollment
-											// and perform validations at the
-											// subscriber level.
 
+				// Check for status of enrollment and perform validations at the
+				// subscriber level.
+				statusCheckandValidation();
 			}
 
 		}
 		if (qName.equals("enrollee")
 				&& currentEnrollmentStatus.equals("CONFIRM")
 				&& mandatoryFields.getSubscriberFlag().equals("N")) {
-			statusConfirmValidations(); // Validations at member level (only for
-										// status="CONFIRM").
+
+			// Validations at member level (only for status="CONFIRM").
+			statusConfirmValidations();
 		}
 		if (qName.equals("id")) {
-			enrollmentId = Integer.parseInt(elementValue); // Get the current
-															// enrollment ID.
+
+			// Get the current enrollment ID.
+			enrollmentId = Integer.parseInt(elementValue);
 		}
 
 	}
@@ -291,8 +293,8 @@ public class DraftHandler extends DefaultHandler {
 	/**
 	 * Setter for boolean valid.
 	 * 
-	 * @param valid
-	 *            .
+	 * @param valid.
+	 *            
 	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
